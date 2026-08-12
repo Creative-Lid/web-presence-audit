@@ -1,34 +1,37 @@
 ---
 name: web-presence-audit
 description: >-
-  Audits a website or web app for public web presence and technical
+  Audits a website or web app codebase for public web presence and technical
   discoverability: SEO metadata, Open Graph/Twitter cards, robots.txt,
   sitemap, JSON-LD/Schema.org, llms.txt and AI discovery, security headers
   (CSP, HSTS), icons/manifest, HTTPS/redirects, and WCAG/ADA-oriented
   accessibility. Use for pre-launch site health checks, SEO audits, social
   sharing metadata, structured data, crawler discoverability, security header
   reviews, accessibility/WCAG checks, or a full marketing web presence audit
-  of a codebase or live URL. Inventory first; prefer accurate findings over
-  speculative checklists; implement fixes only when asked.
+  of a codebase. Inventory first; prefer accurate findings over speculative
+  checklists; implement fixes only when asked. Codebase evidence only—do not
+  fetch or read live third-party page content.
 license: MIT
 metadata:
   author: Creative-Lid
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Web Presence Audit
 
-Practical engineering audit of a site's **public-facing** discoverability, sharing, security headers, and accessibility. Work from evidence in source code and/or a live URL. Prefer fewer accurate findings over speculative checklists.
+Practical engineering audit of a site's **public-facing** discoverability, sharing, security headers, and accessibility. Work from evidence in the **local codebase** only. Prefer fewer accurate findings over speculative checklists.
+
+This skill does **not** fetch, browse, or read live HTTP responses from user-supplied or third-party URLs. Items that require a live site stay **NOT VERIFIED**.
 
 ## When to use
 
-Activate when the user wants a web presence / pre-launch / SEO / social / discovery / security-headers / accessibility audit of a codebase or public URL.
+Activate when the user wants a web presence / pre-launch / SEO / social / discovery / security-headers / accessibility audit of a **codebase**.
 
 Do **not** treat this as a penetration test, performance lab, legal ADA opinion, or WCAG certification.
 
 ## Scope first
 
-1. Confirm target: **codebase**, **live URL**, or **both**.
+1. Confirm target: the package or tree that ships public HTML (repo root or monorepo app).
 2. Confirm depth: full audit (default) vs one category (SEO only, headers only, etc.).
 3. Confirm mode: **report only** (default) vs **implement fixes** (only if the user asks).
 4. Identify surface: marketing site, docs, app shell, or mixed. Private routes (`/login`, `/account`, `/admin`, `/dashboard`, …) are usually expected to be `noindex` / disallowed—not "missing SEO."
@@ -41,7 +44,7 @@ If the repo is a monorepo, locate the package that ships public HTML (`apps/web`
 
 - **Framework / runtime**: inspect lockfiles, configs, and entrypoints (see [references/framework-notes.md](references/framework-notes.md)).
 - **Public origin**: site URL env, `metadataBase`, canonical host, deploy docs—pick one canonical origin when recommending fixes.
-- **Capabilities**: note whether you can read source, fetch URLs, inspect response headers, or run a browser. Missing capability → **NOT VERIFIED**, never fabricate PASS.
+- **Capabilities**: note what is readable in source (metadata APIs, static files, middleware/header config). Missing evidence → **NOT VERIFIED**, never fabricate PASS.
 
 ### 2. Inventory before judging
 
@@ -62,22 +65,14 @@ Load references on demand (do not dump all into context unless needed):
 | Accessibility | [references/accessibility.md](references/accessibility.md) |
 | Framework locations | [references/framework-notes.md](references/framework-notes.md) |
 
-For each finding: severity, category, evidence (file path, URL, header, or snippet), why it matters, concrete fix. No evidence → do not file as PASS or CRITICAL.
+For each finding: severity, category, evidence (file path or config snippet), why it matters, concrete fix. No evidence → do not file as PASS or CRITICAL.
 
-### 4. Codebase vs live site
-
-**Codebase audit**
+### 4. Codebase audit
 
 - Follow framework conventions; check shared defaults **and** page overrides.
-- Reason about rendered output (SSR/SSG vs client-only metadata).
+- Reason about rendered output (SSR/SSG vs client-only metadata) from source and config.
 - Recommend exact files/paths. Edit code only when the user asks to fix or implement.
-
-**Live URL audit**
-
-- Fetch representative pages (home + 1–2 key templates), `/robots.txt`, sitemap (from robots or `/sitemap.xml`), discovery files, icons/manifest when linked.
-- Inspect response headers on at least the document response.
-- Distinguish verified observations from what tools could not check.
-- If network/browser tools are unavailable: say so, audit source only if present, list live checks under **Not Verified**.
+- Do **not** request network fetches of the deployed site, `robots.txt`, sitemaps, or HTML documents for this skill. Mark runtime-only checks (live headers, crawler-visible HTML, social debugger previews) under **Not Verified**.
 
 ### 5. Report
 
@@ -92,12 +87,13 @@ Use the [Output format](#output-format) below. Then offer an ordered fix plan. I
 | **MEDIUM** | Meaningful quality/consistency gaps; not immediate blockers. |
 | **LOW** | Polish, optional enhancements, minor inconsistencies. |
 | **PASS** | Explicitly verified with evidence. |
-| **NOT VERIFIED** | Could not meaningfully test with available tools/environment. |
+| **NOT VERIFIED** | Could not meaningfully test with available tools/environment (including anything that needs a live site). |
 
 Do not mark PASS merely because a text search found no matches.
 
 ## False-positive avoidance (hard rules)
 
+- Do not fetch or browse live sites, arbitrary URLs, or third-party page content as part of this audit.
 - Do not require a web manifest / PWA files for every site.
 - Do not treat `llms.txt` / `ai.txt` as formal SEO requirements; label them as emerging conventions.
 - Do not call every missing security header a vulnerability; consider host/CDN and architecture. Never recommend obsolete headers as modern requirements.
@@ -142,7 +138,7 @@ For each:
 - Evidence:
 - Why it matters:
 - Recommended fix:
-- Where: [file/path/URL]
+- Where: [file/path]
 
 ## Category Findings
 ### SEO
@@ -156,7 +152,7 @@ For each:
 [Only explicitly verified]
 
 ## Not Verified / Limitations
-[What could not be tested and why]
+[What could not be tested and why—including live-site checks out of scope]
 
 ## Recommended Fix Order
 [Concise ordered remediation; framework-specific snippets when helpful]
@@ -176,10 +172,10 @@ Suggested order when implementing gaps:
 6. Discovery files (`llms.txt`, optional `ai.txt`, `.well-known/security.txt`) when the site is public and the user wants them—not as fake SEO blockers.
 7. Accessibility: skip link, `#main-content`, focus-visible, labels/alt, heading order, form error announcements, reduced motion; public accessibility statement when appropriate; wire a11y lint if the stack supports it.
 8. Search Console / Bing verification via env hooks if requested.
-9. Smoke checklist in the summary (home, inner page, robots, sitemap, OG image, headers, skip link / focus).
+9. Smoke checklist in the summary (home, inner page, robots, sitemap, OG image, headers, skip link / focus)—as source-level expectations; live verification is out of scope for this skill.
 
 Keep lists in sync. Summarize present / added / N/A. Do not commit unless asked.
 
-## Missing tools
+## Missing evidence
 
-State limitations plainly. Partial audits are fine. Never claim live header, crawler, or browser checks that did not run.
+State limitations plainly. Partial audits are fine. Never claim live header, crawler, browser, or deployed-site checks that did not run—and do not run them for this skill.

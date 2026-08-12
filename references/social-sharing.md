@@ -42,17 +42,12 @@ Many frameworks map OG + Twitter from one shared metadata helper. Prefer DRY hel
 
 ## Validation considerations
 
-When network tools exist:
-
-- View rendered HTML source for the tags (not only React source props).
-- Optionally note platform debuggers (Facebook Sharing Debugger, X Card Validator, LinkedIn Post Inspector) as manual smoke steps.
-- Do not claim "cards work" without seeing tags and a resolvable image URL.
-
-When only source is available:
+This skill audits source only (no live fetches):
 
 - Confirm helpers emit absolute URLs given the configured site origin.
 - Flag likely relative URL bugs and missing default images as code-level findings.
-- Mark live preview rendering **NOT VERIFIED**.
+- Mark live preview rendering and platform debugger results **NOT VERIFIED**.
+- Optionally mention platform debuggers (Facebook Sharing Debugger, X Card Validator, LinkedIn Post Inspector) as **manual** smoke steps for the user—not as agent network tasks.
 
 ## Severity hints
 

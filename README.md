@@ -1,19 +1,19 @@
 # Web Presence Audit
 
-An Agent Skill that audits a website or web app for public-facing discoverability: SEO, social sharing cards, crawler discovery, security headers, and accessibility.
+An Agent Skill that audits a website or web app **codebase** for public-facing discoverability: SEO, social sharing cards, crawler discovery, security headers, and accessibility.
 
 ## What it audits
 
 - **SEO** — titles, descriptions, canonicals, robots/indexability, headings, sitemaps, obvious technical issues
 - **Discovery** — robots.txt, sitemap.xml, JSON-LD/Schema.org, optional AI discovery files (`llms.txt`, etc.)
 - **Social sharing** — Open Graph, Twitter/X cards, share images and URLs
-- **Security headers** — CSP, HSTS, nosniff, Referrer-Policy, Permissions-Policy, frame protection, and related public headers
+- **Security headers** — CSP, HSTS, nosniff, Referrer-Policy, Permissions-Policy, frame protection, and related config
 - **Accessibility** — WCAG-oriented checks (semantics, labels, alt text, keyboard/focus, forms, landmarks) without claiming legal ADA certification
-- **Production readiness** — icons/manifest when relevant, HTTPS/redirects, localhost/staging leaks in public metadata
+- **Production readiness** — icons/manifest when relevant, HTTPS/redirect config, localhost/staging leaks in public metadata
 
 ## Why use it
 
-Agents are good at checklists and bad at restraint. This skill pushes a practical engineering audit: inventory first, require evidence, avoid false positives, and separate **PASS** from **NOT VERIFIED**. It works against a **codebase**, a **live URL**, or both.
+Agents are good at checklists and bad at restraint. This skill pushes a practical engineering audit: inventory first, require evidence, avoid false positives, and separate **PASS** from **NOT VERIFIED**. It works against a **local codebase** only—no live URL fetches—so deployed HTML, response headers, and crawler-visible output stay **NOT VERIFIED** unless proven in source.
 
 ## Installation
 
@@ -30,7 +30,7 @@ Compatible with Agent Skills-capable tools such as Cursor, Claude Code, Codex, G
 Once installed, ask your agent naturally:
 
 ```text
-Audit this website for SEO, social sharing, discoverability, security headers, and accessibility.
+Audit this codebase for SEO, social sharing, discoverability, security headers, and accessibility.
 ```
 
 ```text
@@ -42,11 +42,7 @@ Check whether this Next.js site is configured correctly for SEO and social shari
 ```
 
 ```text
-Check robots.txt, sitemap.xml, JSON-LD, llms.txt, Open Graph, security headers, and WCAG issues.
-```
-
-```text
-Audit https://example.com and prioritize anything I should fix before launch.
+Check robots.txt, sitemap.xml, JSON-LD, llms.txt, Open Graph, security headers, and WCAG issues in this repo.
 ```
 
 By default the skill **reports findings**. Ask explicitly if you want it to implement fixes in the repo.
@@ -58,25 +54,22 @@ By default the skill **reports findings**. Ask explicitly if you want it to impl
 | SEO | Title/description/canonical, indexability, sitemap/robots alignment |
 | Discovery | Structured data, crawler files, optional `llms.txt` (labeled as emerging) |
 | Social | `og:*`, Twitter cards, absolute share image URLs |
-| Security | Modern response headers; obsolete headers called out separately |
+| Security | Header/middleware/CDN config; obsolete headers called out separately |
 | Accessibility | Skip links, labels, focus, landmarks, forms; limitations stated clearly |
-| General | Favicons, manifest when appropriate, host redirects, placeholder URL leaks |
+| General | Favicons, manifest when appropriate, redirect config, placeholder URL leaks |
 
 Detailed guidance lives under [`references/`](references/).
 
-## Codebase audits vs live URL audits
+## Evidence model
 
-| Mode | What the agent uses | What you get |
+| Source | What the agent uses | What you get |
 | --- | --- | --- |
 | **Codebase** | Source, configs, static assets, framework conventions | File-specific findings and fix guidance |
-| **Live URL** | HTTP fetches / browser tools when available | Rendered metadata, headers, robots/sitemap verification |
-| **Both** | Combined evidence | Strongest report; conflicts called out |
-
-Live checks depend on network and tool access. If the environment cannot fetch the site, the skill must list those items under **Not Verified**—not invent passes.
+| **Live site** | Out of scope | List under **Not Verified** (no fetches) |
 
 ## Supported agents
 
-Any agent that supports the [Agent Skills](https://agentskills.io) format and can read this repository’s root `SKILL.md`. Optional tools (browser, curl, Lighthouse, axe) improve coverage but are not required for a useful source audit.
+Any agent that supports the [Agent Skills](https://agentskills.io) format and can read this repository’s root `SKILL.md`.
 
 ## Limitations
 
@@ -85,7 +78,8 @@ Any agent that supports the [Agent Skills](https://agentskills.io) format and ca
 - Not a legal ADA determination or WCAG certification
 - Not a guarantee of search ranking outcomes
 - Emerging files like `llms.txt` are optional conventions, not formal SEO requirements
-- Client-rendered SPAs may limit what crawlers and this audit can verify without runtime tooling
+- Client-rendered SPAs may limit what can be verified from source alone
+- **No live URL mode** — the skill does not fetch outsider-authored page content (avoids third-party content / indirect prompt-injection exposure). Runtime headers, crawler HTML, and social platform previews are **NOT VERIFIED** unless visible in the repo.
 
 ## Repository structure
 

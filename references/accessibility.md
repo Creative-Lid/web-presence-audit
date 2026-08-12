@@ -28,7 +28,7 @@ Use severity for real user impact:
 
 - All interactive controls reachable via keyboard when runtime testing is possible.
 - Visible `:focus-visible` styles; do not remove outlines globally without a clear replacement.
-- No keyboard traps in modals/menus (verify when browser tools exist; otherwise NOT VERIFIED).
+- No keyboard traps in modals/menus (verify from interactive patterns in source; runtime behavior **NOT VERIFIED** without a local a11y run).
 - Dialogs: focus move in, restore on close, Escape when expected—verify when possible.
 
 ## Forms

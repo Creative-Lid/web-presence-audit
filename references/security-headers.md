@@ -33,7 +33,7 @@ CSP should be designed around real script/style/image/connect needs. Prefer **Re
 
 - Headers may be set in app config (`next.config` headers, middleware, Nitro/Nuxt route rules, platform `_headers`, CDN rules, reverse proxy). Audit the layer that actually ships to users.
 - Preview/staging hosts may omit HSTS or use different CSP—do not confuse with production.
-- Managed hosts sometimes inject headers; live response evidence beats config-only guesses.
+- Managed hosts sometimes inject headers; without a live response, treat config as best-effort and mark deployed header verification **NOT VERIFIED**.
 - Long-cache on immutable static assets (icons, hashed JS/CSS, images) is a performance/caching concern adjacent to headers—mention when configuring platform headers, not as a CVE.
 
 ## HSTS cautions
