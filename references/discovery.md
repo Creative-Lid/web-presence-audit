@@ -18,7 +18,7 @@ Treat these as mainstream when a site is public:
 
 Check:
 
-- File reachable at `/robots.txt` on the public origin.
+- A static file or framework route defines the expected `/robots.txt` path.
 - Does not block public marketing content unintentionally.
 - Disallows private app/API prefixes when those exist.
 - `Sitemap:` points to an absolute https sitemap URL.
@@ -28,7 +28,7 @@ Check:
 
 Check:
 
-- Discoverable via robots and/or conventional `/sitemap.xml` (or sitemap index).
+- A static file or generator defines `/sitemap.xml` (or a sitemap index), with a matching robots directive when appropriate.
 - Contains public indexable URLs only.
 - Uses canonical host and https.
 - Stays aligned with real routes and footer/legal links.
@@ -92,11 +92,11 @@ These are **optional conventions**, not formal SEO requirements. Never score a s
 ### Content accessibility for AI/search crawlers
 
 - Important public content should be available without login when discoverability is a goal.
-- Blocked resources, empty CSR shells, or `noindex` on marketing pages undermine both traditional and AI discovery—verify before asserting.
+- Blocked resources, empty CSR shells, or `noindex` on marketing pages undermine both traditional and AI discovery—require repository evidence before asserting.
 
 ## Trust / contact discovery (related)
 
-When auditing public production sites, optionally note:
+For codebases that ship public production sites, optionally note:
 
 - `/.well-known/security.txt` — Contact, Expires, Preferred-Languages, Canonical (good practice, not SEO)
 - `humans.txt` — optional novelty; LOW / N/A

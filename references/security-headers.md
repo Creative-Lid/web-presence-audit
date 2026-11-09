@@ -15,7 +15,7 @@ Defensive review of **public HTTP response headers** for websites. This is **not
 | `Cross-Origin-Opener-Policy` | Isolate browsing context (when appropriate) |
 | `Cross-Origin-Resource-Policy` | Control cross-origin resource reads (when appropriate) |
 
-Also note (when visible): whether `Server` / `X-Powered-By` unnecessarily fingerprint the stack—usually LOW hardening, not a vulnerability by itself.
+Also note when configured: whether `Server` / `X-Powered-By` unnecessarily fingerprint the stack—usually LOW hardening, not a vulnerability by itself.
 
 ## Reasonable baselines (not one-size-fits-all)
 
@@ -33,7 +33,7 @@ CSP should be designed around real script/style/image/connect needs. Prefer **Re
 
 - Headers may be set in app config (`next.config` headers, middleware, Nitro/Nuxt route rules, platform `_headers`, CDN rules, reverse proxy). Audit the layer that actually ships to users.
 - Preview/staging hosts may omit HSTS or use different CSP—do not confuse with production.
-- Managed hosts sometimes inject headers; without a live response, treat config as best-effort and mark deployed header verification **NOT VERIFIED**.
+- Managed hosts sometimes inject headers; treat configuration as best-effort and mark deployed header verification **NOT VERIFIED**.
 - Long-cache on immutable static assets (icons, hashed JS/CSS, images) is a performance/caching concern adjacent to headers—mention when configuring platform headers, not as a CVE.
 
 ## HSTS cautions
@@ -61,10 +61,10 @@ CSP should be designed around real script/style/image/connect needs. Prefer **Re
 
 ## Cookies (observational only)
 
-If `Set-Cookie` is visible on responses in scope:
+If application or hosting configuration defines `Set-Cookie` behavior:
 
 - Note absence of `Secure`, `HttpOnly`, or `SameSite` on session-like cookies as observational findings.
-- Do not claim full session-security assurance from homepage headers alone.
+- Do not claim full session-security assurance from partial configuration evidence.
 
 ## Obsolete / legacy headers — do not require
 

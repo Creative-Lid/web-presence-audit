@@ -13,7 +13,7 @@ An Agent Skill that audits a website or web app **codebase** for public-facing d
 
 ## Why use it
 
-Agents are good at checklists and bad at restraint. This skill pushes a practical engineering audit: inventory first, require evidence, avoid false positives, and separate **PASS** from **NOT VERIFIED**. It works against a **local codebase** only—no live URL fetches—so deployed HTML, response headers, and crawler-visible output stay **NOT VERIFIED** unless proven in source.
+Agents are good at checklists and bad at restraint. This skill pushes a practical engineering audit: inventory first, require evidence, avoid false positives, and separate **PASS** from **NOT VERIFIED**. It uses repository source, configuration, and static assets; deployed-only behavior stays **NOT VERIFIED**.
 
 ## Installation
 
@@ -65,7 +65,7 @@ Detailed guidance lives under [`references/`](references/).
 | Source | What the agent uses | What you get |
 | --- | --- | --- |
 | **Codebase** | Source, configs, static assets, framework conventions | File-specific findings and fix guidance |
-| **Live site** | Out of scope | List under **Not Verified** (no fetches) |
+| **Deployed behavior** | Outside repository evidence | List under **Not Verified** |
 
 ## Supported agents
 
@@ -79,7 +79,7 @@ Any agent that supports the [Agent Skills](https://agentskills.io) format and ca
 - Not a guarantee of search ranking outcomes
 - Emerging files like `llms.txt` are optional conventions, not formal SEO requirements
 - Client-rendered SPAs may limit what can be verified from source alone
-- **No live URL mode** — the skill does not fetch outsider-authored page content (avoids third-party content / indirect prompt-injection exposure). Runtime headers, crawler HTML, and social platform previews are **NOT VERIFIED** unless visible in the repo.
+- Deployed headers, crawler output, and social-platform previews are **NOT VERIFIED** unless repository evidence establishes the relevant behavior.
 
 ## Repository structure
 

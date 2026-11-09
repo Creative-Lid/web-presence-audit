@@ -26,10 +26,10 @@ Use severity for real user impact:
 
 ## Keyboard and focus
 
-- All interactive controls reachable via keyboard when runtime testing is possible.
+- Check keyboard support in component logic; mark actual interaction behavior **NOT VERIFIED**.
 - Visible `:focus-visible` styles; do not remove outlines globally without a clear replacement.
-- No keyboard traps in modals/menus (verify from interactive patterns in source; runtime behavior **NOT VERIFIED** without a local a11y run).
-- Dialogs: focus move in, restore on close, Escape when expected—verify when possible.
+- Check modal/menu focus logic for likely keyboard traps; mark actual interaction behavior **NOT VERIFIED**.
+- Dialogs: inspect focus move-in, restoration on close, and expected Escape handling; mark actual interaction behavior **NOT VERIFIED**.
 
 ## Forms
 
@@ -59,7 +59,7 @@ Use severity for real user impact:
 ## Dynamic UI
 
 - Live updates (toasts, validators) should be announced when they convey critical status.
-- Route changes in SPAs: title updates and focus management—verify when runtime tools exist.
+- Route changes in SPAs: inspect title-update and focus-management logic; mark actual route behavior **NOT VERIFIED**.
 
 ## Public accessibility statement
 

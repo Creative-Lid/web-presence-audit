@@ -1,6 +1,6 @@
 # SEO reference
 
-Practical technical SEO checks for **codebase** audits. Verify with source evidence; skip items that do not apply. Mark runtime-only checks **NOT VERIFIED**.
+Practical technical SEO checks for **codebase** audits. Verify with repository evidence; skip items that do not apply. Mark deployment-only checks **NOT VERIFIED**.
 
 ## Crawlability and indexability
 

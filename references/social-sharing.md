@@ -27,7 +27,7 @@ Many frameworks map OG + Twitter from one shared metadata helper. Prefer DRY hel
 
 - Target roughly **1200×630** for large cards (common convention; platforms vary).
 - Image URL must be **absolute** `https://…` on production.
-- Verify the asset exists (static file, generated route, or CDN) when tools allow.
+- Verify the asset is represented by a static file, generated route, or repository-backed CDN configuration.
 - Avoid requiring a separate LinkedIn-only image unless there is a demonstrated need.
 - Placeholder, broken, or localhost image URLs on production are HIGH.
 
@@ -42,12 +42,12 @@ Many frameworks map OG + Twitter from one shared metadata helper. Prefer DRY hel
 
 ## Validation considerations
 
-This skill audits source only (no live fetches):
+This skill uses repository evidence only:
 
 - Confirm helpers emit absolute URLs given the configured site origin.
 - Flag likely relative URL bugs and missing default images as code-level findings.
-- Mark live preview rendering and platform debugger results **NOT VERIFIED**.
-- Optionally mention platform debuggers (Facebook Sharing Debugger, X Card Validator, LinkedIn Post Inspector) as **manual** smoke steps for the user—not as agent network tasks.
+- Mark deployed preview rendering and platform debugger results **NOT VERIFIED**.
+- Optionally mention platform debuggers (Facebook Sharing Debugger, X Card Validator, LinkedIn Post Inspector) as **manual user smoke steps**.
 
 ## Severity hints
 
